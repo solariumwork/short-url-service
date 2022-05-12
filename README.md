@@ -1,6 +1,6 @@
 ## Как развернуть проект
 
-1) Копируем .env.example в .env (для тестового они полностью совпадают)
+1) Копируем .env.example в .env (для тестового задания они полностью совпадают)
 2) composer require laravel/sail --dev --ignore-platform-reqs
 3) alias sail='[ -f sail ] && bash sail || bash vendor/bin/sail'
 4) sail up -d
