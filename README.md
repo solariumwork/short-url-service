@@ -8,5 +8,6 @@
 6) sail artisan migrate
 7) sail npm install
 8) sail npm run dev
+9) Открываем http://localhost
 
 Проект запускал на Ubuntu 22.04 LTS
