@@ -33,9 +33,9 @@ class UrlShortenerService implements UrlShortenerServiceInterface
      */
     public function makeShorter(string $url): string
     {
-        $cachedShortUrl = $this->shortUrlCachedService->getShortUrl($url);
+        $cachedShortUrl = $this->shortUrlCachedService->getShortUrlCode($url);
         if ($cachedShortUrl !== null) {
-            return $cachedShortUrl;
+            return $this->getShortUrlByCode($cachedShortUrl);
         }
 
         $shortUrl = $this->shortUrlRepository->firstByUrl($url);
@@ -45,7 +45,7 @@ class UrlShortenerService implements UrlShortenerServiceInterface
 
         $code = uniqid();
         $this->shortUrlRepository->create($url, $code);
-        $this->shortUrlCachedService->cacheUrl($url, $code);
+        $this->shortUrlCachedService->cacheShortUrl($url, $code);
 
         return $this->getShortUrlByCode($code);
     }

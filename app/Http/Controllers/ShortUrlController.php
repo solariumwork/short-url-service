@@ -27,14 +27,14 @@ class ShortUrlController extends Controller
      */
     public function generate(GenerateShortUrlRequest $request): JsonResponse
     {
-        $url = strip_tags(htmlspecialchars_decode($request->string('url')->trim()));
+        $url = $request->string('url')->trim();
 
         $shortUrl = $this->urlShortenerService->makeShorter($url);
 
         return response()
             ->json([
                 'url' => $url,
-                'short_url' => $shortUrl
+                'shortUrl' => $shortUrl
             ]);
     }
 
@@ -45,7 +45,7 @@ class ShortUrlController extends Controller
     public function redirectByCode(string $code): RedirectResponse
     {
         if (trim($code) === '') {
-            abort(404, 'Короткая ссылка не найдена');
+            abort(Response::HTTP_NOT_FOUND, 'Короткая ссылка не найдена');
         }
 
         $url = $this->urlShortenerService->restoreUrlByCode($code);

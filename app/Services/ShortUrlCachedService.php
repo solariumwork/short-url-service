@@ -21,9 +21,9 @@ class ShortUrlCachedService implements ShortUrlCachedServiceInterface
      *
      * @return string
      */
-    public function getShortUrl(string $url)
+    public function getShortUrlCode(string $url)
     {
-        return $this->redis->get(ShortUrlCachedServiceInterface::URL_KEY_PREFIX . ' ' . $url);
+        return $this->redis->get($url);
     }
 
     /**
@@ -33,7 +33,7 @@ class ShortUrlCachedService implements ShortUrlCachedServiceInterface
      */
     public function getLongUrl(string $code)
     {
-        return $this->redis->get(ShortUrlCachedServiceInterface::CODE_KEY_PREFIX . ' ' . $code);
+        return $this->redis->get($code);
     }
 
     /**
@@ -42,9 +42,9 @@ class ShortUrlCachedService implements ShortUrlCachedServiceInterface
      *
      * @return void
      */
-    public function cacheUrl(string $url, string $code): void
+    public function cacheShortUrl(string $url, string $code): void
     {
-        $this->redis->set(ShortUrlCachedServiceInterface::URL_KEY_PREFIX . ' ' . $url, $code);
-        $this->redis->set(ShortUrlCachedServiceInterface::CODE_KEY_PREFIX . ' ' . $code, $url);
+        $this->redis->set($url, $code);
+        $this->redis->set($code, $url);
     }
 }

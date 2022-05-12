@@ -2,7 +2,10 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -48,11 +51,21 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->renderable(function (NotFoundHttpException $e, $request) {
+        $this->renderable(function (Exception $e, $request) {
+            if ($e->getCode() < Response::HTTP_CONTINUE) {
+                return;
+            }
+
             if ($request->is('api/*')) {
+                if ($e->getCode() >= Response::HTTP_INTERNAL_SERVER_ERROR) {
+                    return response()->json([
+                        'message' => $e->getCode()
+                    ], Response::HTTP_INTERNAL_SERVER_ERROR);
+                }
+
                 return response()->json([
                     'message' => $e->getMessage()
-                ], 404);
+                ], $e->getCode());
             }
         });
     }

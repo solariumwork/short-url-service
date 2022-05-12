@@ -24,7 +24,7 @@ class GenerateShortUrlRequest extends FormRequest
     public function rules()
     {
         return [
-            'url' => 'required|filled'
+            'url' => 'required|url'
         ];
     }
 
@@ -36,7 +36,7 @@ class GenerateShortUrlRequest extends FormRequest
     public function prepareForValidation()
     {
         $this->merge([
-            'url' => strip_tags(htmlspecialchars_decode($this->string('url')->trim())),
+            'url' => $this->string('url')->trim()->value(),
         ]);
     }
 
@@ -48,8 +48,8 @@ class GenerateShortUrlRequest extends FormRequest
     public function messages()
     {
         return [
-            'url.required' => 'Введите ссылку',
-            'url.filled' => 'Введите ссылку',
+            'url.required' => 'Ошибка! Пожалуйста, введите ссылку',
+            'url.url' => 'Ошибка! Пожалуйста, введите ссылку',
         ];
     }
 }
