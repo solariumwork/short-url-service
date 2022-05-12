@@ -50,7 +50,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Exception $e, $request) {
-            if ($e->getCode() < Response::HTTP_CONTINUE) {
+            if ((int) $e->getCode() < Response::HTTP_CONTINUE) {
                 return;
             }
 
@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
 
                 return response()->json([
                     'message' => $e->getMessage()
-                ], $e->getCode());
+                ], (int) $e->getCode());
             }
         });
     }
